@@ -1,24 +1,31 @@
+# need X , Y , parents
+selection <- function( X , Y , parents , intercept ){
 
-X <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
-Y<-1+-1*X[,1]+2*X[,3]+ 1.1*X[,5]+1.2*X[,7]
+  # determine number of parents in a population
+  P <- dim( parents )[ 1 ]
 
-# need dataset, model, fitness, parents
-selection <- function( X , Y , parents ){
+  # initialize empty vector for AIC
+  AIC <- rep( 0 , P )
 
-  numInd <- dim( parents )[ 1 ]
-
-  AIC <- rep( 0 , numInd )
-
-  for ( i in 1:numInd ){
-    AIC[ i ] <- AIC( lm( Y ~ . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+  # loop through each parent and regression with selected variables, and output AIC
+  for ( i in 1:P ){
+  	if ( intercept[ i ] == 1 ){
+      AIC[ i ] <- AIC( lm( Y ~ . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+  	} else {
+  	  AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+  	}
   }
 
-  select_ind <- sample( order( AIC ) , numInd , prob = seq( 1 , ( 1 / numInd ) , by = -( 1 / numInd ) ) , replace = TRUE )
+  # fitness function based on rank, where higher rank gives higher fitness (probability)
+  fitness_prob <- 2 / P / ( P + 1 ) * seq( 1:P )
 
+  # assign fitness probabilities to calculated AICs, and select (stochastically) parents to keep
+  select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fitness_prob , replace = TRUE )
   parents_selection <- parents[ select_ind , ]
 
   return(parents_selection)
 }
 
 
-selection( X = X , Y = Y , parents = parents )
+selection( X = X , Y = Y , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] )
+
