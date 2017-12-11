@@ -29,5 +29,20 @@ selection <- function( data , outcome , parents , intercept ){
   return(parents_selection)
 }
 
-selection( data = data , outcome = outcome , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] )
+# simulate data
+initData <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
+initOutcome <-1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]+1.2*initData[,7]
+data <- data.frame( initData, initOutcome )
+
+# set initiation parameters
+minC<-0.1
+maxC<-0.9
+pSize<-15
+vars<-dim(initData)[2]
+
+# initiate parents (make sure to define Initiation function previously)
+starting<-Initiation(vars, pSize, minC, maxC)
+
+# run selection function
+selection( data = data , outcome = "initOutcome" , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] )
 
