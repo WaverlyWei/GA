@@ -1,11 +1,26 @@
-# need data, outcome, parents
-selection <- function( data , outcome , parents , intercept ){
 
-  X <- data[ , !names( data ) %in% outcome ]
-  Y <- data[ , names( data ) %in% outcome ]
+GHFitness <- function( P ){ 2 / P / ( P + 1 ) * seq( 1:P ) }
+
+# need data, outcome, parents
+selection <- function( data , outcome , parents , intercept , fitness = GHFitness ){
 
   # determine number of parents in a population
   P <- dim( parents )[ 1 ]
+
+  # check fitness function length
+  if( length( fitness( P ) ) != P ) { stop( "fitness function must output vector of length P" ) }
+
+  # run fitness function
+  fitness_prob <- fitness( P )
+
+  # check fitness function output is increasing in probability
+  if( order( fitness_prob ) != seq( 1:P ) ) { stop( "fitness function output must be increasing" ) }
+  if( sum( 0 < fitness_prob & fitness_prob < 1 ) != P ) { stop( "fitness function output must be probabilities (between 0 and 1)" ) }
+
+  # make X, Y
+  X <- data[ , !names( data ) %in% outcome ]
+  Y <- data[ , names( data ) %in% outcome ]
+
 
   # initialize empty vector for AIC
   AIC <- rep( 0 , P )
@@ -18,9 +33,6 @@ selection <- function( data , outcome , parents , intercept ){
       AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
   	}
   }
-
-  # fitness function based on rank, where higher rank gives higher fitness (probability)
-  fitness_prob <- 2 / P / ( P + 1 ) * seq( 1:P )
 
   # assign fitness probabilities to calculated AICs, and select (stochastically) parents to keep
   select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fitness_prob , replace = TRUE )
@@ -44,5 +56,5 @@ vars<-dim(initData)[2]
 starting<-Initiation(vars, pSize, minC, maxC)
 
 # run selection function
-selection( data = data , outcome = "initOutcome" , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] )
+selection( data = data , outcome = "initOutcome" , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] , fitness = GHFitness )
 
