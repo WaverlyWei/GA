@@ -14,6 +14,8 @@ Initiation <- function(data, pSize=length(data[,1]), minC=0.1, maxC=0.9){
   return(list("InitMatrix"<-initMatrix, "Intercept"<-intercept))
 }
 
+GHFitness <- function( P ){ 2 / P / ( P + 1 ) * seq( 1:P ) }
+
 selection <- function( data , outcome , parents , intercept , fitness = GHFitness ){
 
   # determine number of parents in a population

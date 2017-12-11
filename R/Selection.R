@@ -14,7 +14,7 @@ selection <- function( data , outcome , parents , intercept , fitness = GHFitnes
   fitness_prob <- fitness( P )
 
   # check fitness function output is increasing in probability
-  if( order( fitness_prob ) != seq( 1:P ) ) { stop( "fitness function output must be increasing" ) }
+  if( !all.equal( order( fitness_prob ) , seq( 1:P ) ) ) { stop( "fitness function output must be increasing" ) }
   if( sum( 0 < fitness_prob & fitness_prob < 1 ) != P ) { stop( "fitness function output must be probabilities (between 0 and 1)" ) }
 
   # make X, Y
@@ -37,8 +37,9 @@ selection <- function( data , outcome , parents , intercept , fitness = GHFitnes
   # assign fitness probabilities to calculated AICs, and select (stochastically) parents to keep
   select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fitness_prob , replace = TRUE )
   parents_selection <- parents[ select_ind , ]
+  intercept_selection <- intercept[ select_ind ]
 
-  return(parents_selection)
+  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection )
 }
 
 # simulate data
