@@ -1,4 +1,4 @@
-#Create a set of individuals, where each individual is a string of 0s and 1s with 1s 
+#Create a set of individuals, where each individual is a string of 0s and 1s with 1s
 #input
 ##vars: number of possible variables
 ##pSize: population size for each generation
@@ -15,7 +15,7 @@ Initiation <- function(vars, pSize, minC, maxC){
   for(i in 1:pSize)
     initMatrix[i,]<-sample(c(0,1), vars, replace = TRUE, c(1-prob[i],prob[i]))
   intercept<-sample(c(0,1),pSize,replace = TRUE)
-  
+
   return(list("InitMatrix"<-initMatrix, "Intercept"<-intercept))
 }
 

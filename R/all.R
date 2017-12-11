@@ -2,7 +2,9 @@ initData <- matrix( rnorm( 5000 , sd = 1:5 ) , ncol = 10 , byrow = TRUE )
 initOutcome <-1 + -1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ] + 1.2 * initData[ , 7 ]
 data <- data.frame( initData , initOutcome )
 
-Initiation <- function( data , pSize , minC=0.1 , maxC=0.9 ){
+GHFitness <- function( P ){ 2 / P / ( P + 1 ) * seq( 1:P ) }
+
+Initiation <- function( data , pSize=length(data[,1]) , minC=0.1 , maxC=0.9 ){
 
   vars <- length( data[ 1 , ] ) - 1
   initMatrix <- matrix( data = NA , nrow = pSize , ncol = vars )
@@ -13,8 +15,6 @@ Initiation <- function( data , pSize , minC=0.1 , maxC=0.9 ){
 
   return( list( "InitMatrix" <- initMatrix , "Intercept" <- intercept ) )
 }
-
-GHFitness <- function( P ){ 2 / P / ( P + 1 ) * seq( 1:P ) }
 
 selection <- function( data , outcome , parents , intercept , fitness = GHFitness ){
 
@@ -65,7 +65,7 @@ crossover <- function( P1 , P2 ){
   ##Cut&Ligate parent strings
   P3 = c( P1[ 1:site ] , P2[ ( site + 1 ):n ] )
   P4 = c( P1[ ( site + 1 ):n ] , P2[ 1:site ] )
-  
+
   ##Perhaps return all four strings??
   return( list( P3 = P3 , P4 = P4 ) )
 }
@@ -85,26 +85,28 @@ select <- function( data, model , fitness ){
 
   # Initialize the first generation
   starting <- Initiation( data )
+  parents = starting[[1]]
+  intercept = starting[[2]]
 
   convergenceCriterion = 10e-8 # what should be the convergence criterion?
 
-  while ( cvg > convergenceCriterion ){
+  for ( i in 1:10 ){
 
     #select and breed
-    children <- selection( data = data , outcome = "initOutcome" , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]])
-
+    tmp <- selection( data = data , outcome = "initOutcome" , parents , intercept)
+    children <- tmp [[1]]
+    intercept <- tmp [[2]]
     # oldAIC =
 
     # crossover
-    for ( i in seq( from = 1 , to = length( children[ , 1 ] ) , by = 2 ) ){
-      tmp = crossover( children[ i , ] , children[ i + 1 , ] )
-      children[ i , ] = tmp$P3
-      children[ i + 1 , ] = tmp$P4
-      print( i )
+    for ( j in seq( from = 1 , to = length( children[ , 1 ] ) , by = 2 ) ){
+      tmp = crossover( children[ j , ] , children[ j + 1 , ] )
+      children[ j , ] = tmp$P3
+      children[ j + 1 , ] = tmp$P4
     }
 
     # mutation
-    children <- apply( children , 1 , mutation , mutationProb = 0.01 )
+    children <- apply( children , 2 , mutation , mutationProb = 0.01 )
 
     # cvg = min(AIC(lm(,children))) - oldAIC
 
@@ -114,6 +116,8 @@ select <- function( data, model , fitness ){
   }
 
   # Returning the selected variables
-  return( dataset[ 1 , which( children[ 1 , ] == 1 ) ] )
+  return(which( children[ 1 , ] == 1 ))
 
 }
+
+select(data)
