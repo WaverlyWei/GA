@@ -6,7 +6,6 @@ crossover <-function(P1, P2){
     n = length(P1)
     ##Choose crossover site randomly
     site = floor(runif(1,min = 1, max = n-1))
-    print(site)
     ##Cut&Ligate parent strings
     P3 = c(P1[1:site], P2[(site+1):n])
     P4 = c(P1[(site+1):n], P2[1:site])
