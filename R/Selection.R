@@ -1,5 +1,8 @@
-# need X , Y , parents
-selection <- function( X , Y , parents , intercept ){
+# need data, outcome, parents
+selection <- function( data , outcome , parents , intercept ){
+
+  X <- data[ , !names( data ) %in% outcome ]
+  Y <- data[ , names( data ) %in% outcome ]
 
   # determine number of parents in a population
   P <- dim( parents )[ 1 ]
@@ -12,7 +15,7 @@ selection <- function( X , Y , parents , intercept ){
   	if ( intercept[ i ] == 1 ){
       AIC[ i ] <- AIC( lm( Y ~ . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
   	} else {
-  	  AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+      AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
   	}
   }
 
@@ -26,6 +29,5 @@ selection <- function( X , Y , parents , intercept ){
   return(parents_selection)
 }
 
-
-selection( X = X , Y = Y , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] )
+selection( data = data , outcome = outcome , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] )
 

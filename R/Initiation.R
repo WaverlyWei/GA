@@ -6,8 +6,8 @@
 ##maxC: max subset size in percentile (1 to C)
 ##output: Initial Matrix with 0s and 1s
 
-data <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
-outcome <-1+-1*data[,1]+2*data[,3]+ 1.1*data[,5]+1.2*data[,7]
+initData <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
+initOutcome <-1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]+1.2*initData[,7]
 
 Initiation <- function(vars, pSize, minC, maxC){
   initMatrix<-matrix(data=NA, nrow = pSize, ncol = vars)
@@ -23,6 +23,6 @@ Initiation <- function(vars, pSize, minC, maxC){
 minC<-0.1
 maxC<-0.9
 pSize<-15
-vars<-dim(data)[2]
+vars<-dim(initData)[2]
 
 starting<-Initiation(vars, pSize, minC, maxC)
