@@ -2,7 +2,7 @@ initData <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
 initOutcome <-1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]+1.2*initData[,7]
 data <- data.frame( initData, initOutcome )
 
-Initiation <- function(data, pSize=length(data[,1]), minC=0.1, maxC=0.9){
+Initiation <- function(data, pSize , minC=0.1, maxC=0.9){
 
   vars <- length(data[1,])-1
   initMatrix<-matrix(data=NA, nrow = pSize, ncol = vars)
@@ -53,7 +53,7 @@ selection <- function( data , outcome , parents , intercept , fitness = GHFitnes
   parents_selection <- parents[ select_ind , ]
   intercept_selection <- intercept[ select_ind ]
 
-  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection )
+  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection ) )
 }
 
 crossover <-function(P1, P2){

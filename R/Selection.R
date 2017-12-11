@@ -39,7 +39,7 @@ selection <- function( data , outcome , parents , intercept , fitness = GHFitnes
   parents_selection <- parents[ select_ind , ]
   intercept_selection <- intercept[ select_ind ]
 
-  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection )
+  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection ) )
 }
 
 # simulate data
@@ -54,7 +54,7 @@ pSize<-15
 vars<-dim(initData)[2]
 
 # initiate parents (make sure to define Initiation function previously)
-starting<-Initiation(vars, pSize, minC, maxC)
+starting<-Initiation(data, pSize, minC, maxC)
 
 # run selection function
 selection( data = data , outcome = "initOutcome" , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] , fitness = GHFitness )
