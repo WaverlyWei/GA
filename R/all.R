@@ -4,6 +4,26 @@ data <- data.frame( initData , initOutcome )
 
 GHFitness <- function( P ){ 2 / P / ( P + 1 ) * seq( 1:P ) }
 
+calculateAIC <- function(data, outcome, parents, intercept){
+  # make X, Y
+  X <- data[ , !names( data ) %in% outcome ]
+  Y <- data[ , names( data ) %in% outcome ]
+
+  # initialize empty vector for AIC
+  P = dim( parents )[ 1 ]
+  AIC <- rep( 0 , P )
+
+  # loop through each parent and regression with selected variables, and output AIC
+  for ( i in 1:P ){
+    if ( intercept[ i ] == 1 ){
+      AIC[ i ] <- AIC( lm( Y ~ . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+    } else {
+      AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+    }
+  }
+  return(AIC)
+}
+
 Initiation <- function( data , pSize=length(data[,1]) , minC=0.1 , maxC=0.9 ){
 
   vars <- length( data[ 1 , ] ) - 1
@@ -31,29 +51,14 @@ selection <- function( data , outcome , parents , intercept , fitness = GHFitnes
   if( !all.equal( order( fitness_prob ) , seq( 1:P ) ) ) { stop( "fitness function output must be increasing" ) }
   if( sum( 0 < fitness_prob & fitness_prob < 1 ) != P ) { stop( "fitness function output must be probabilities (between 0 and 1)" ) }
 
-  # make X, Y
-  X <- data[ , !names( data ) %in% outcome ]
-  Y <- data[ , names( data ) %in% outcome ]
-
-
-  # initialize empty vector for AIC
-  AIC <- rep( 0 , P )
-
-  # loop through each parent and regression with selected variables, and output AIC
-  for ( i in 1:P ){
-    if ( intercept[ i ] == 1 ){
-      AIC[ i ] <- AIC( lm( Y ~ . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
-    } else {
-      AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
-    }
-  }
+  AIC <- calculateAIC(data, outcome, parents, intercept)
 
   # assign fitness probabilities to calculated AICs, and select (stochastically) parents to keep
   select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fitness_prob , replace = TRUE )
   parents_selection <- parents[ select_ind , ]
   intercept_selection <- intercept[ select_ind ]
 
-  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection ) )
+  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection, AIC = AIC ) )
 }
 
 crossover <- function( P1 , P2 ){
@@ -90,13 +95,16 @@ select <- function( data, model , fitness ){
 
   convergenceCriterion = 10e-8 # what should be the convergence criterion?
 
-  for ( i in 1:10 ){
+  steps = 50
+  convergence <- rep( 0 , steps )
+
+  for ( i in 1:steps ){
 
     #select and breed
     tmp <- selection( data = data , outcome = "initOutcome" , parents , intercept)
     children <- tmp [[1]]
     intercept <- tmp [[2]]
-    # oldAIC =
+    oldAIC <- min(tmp[[3]])
 
     # crossover
     for ( j in seq( from = 1 , to = length( children[ , 1 ] ) , by = 2 ) ){
@@ -108,7 +116,8 @@ select <- function( data, model , fitness ){
     # mutation
     children <- apply( children , 2 , mutation , mutationProb = 0.01 )
 
-    # cvg = min(AIC(lm(,children))) - oldAIC
+    newAIC <- min(calculateAIC(data, outcome = "initOutcome", children, intercept))
+    convergence[i] <- abs(newAIC - oldAIC)
 
     # New parents
     parents <- children
@@ -116,8 +125,11 @@ select <- function( data, model , fitness ){
   }
 
   # Returning the selected variables
-  return(which( children[ 1 , ] == 1 ))
+  return(list(which( children[ 1 , ] == 1), convergence))
 
 }
 
-select(data)
+GAresults = select(data)
+variables = GAresults[[1]]
+convergence = GAresults[[2]]
+plot(convergence)

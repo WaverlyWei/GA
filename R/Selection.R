@@ -1,7 +1,28 @@
 
 GHFitness <- function( P ){ 2 / P / ( P + 1 ) * seq( 1:P ) }
 
+calculateAIC <- function(data, outcome, parents, intercept){
+  # make X, Y
+  X <- data[ , !names( data ) %in% outcome ]
+  Y <- data[ , names( data ) %in% outcome ]
+
+  # initialize empty vector for AIC
+  P = dim( parents )[ 1 ]
+  AIC <- rep( 0 , P )
+
+  # loop through each parent and regression with selected variables, and output AIC
+  for ( i in 1:P ){
+    if ( intercept[ i ] == 1 ){
+      AIC[ i ] <- AIC( lm( Y ~ . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+    } else {
+      AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
+    }
+  }
+  return(AIC)
+}
+
 # need data, outcome, parents
+
 selection <- function( data , outcome , parents , intercept , fitness = GHFitness ){
 
   # determine number of parents in a population
@@ -17,29 +38,14 @@ selection <- function( data , outcome , parents , intercept , fitness = GHFitnes
   if( !all.equal( order( fitness_prob ) , seq( 1:P ) ) ) { stop( "fitness function output must be increasing" ) }
   if( sum( 0 < fitness_prob & fitness_prob < 1 ) != P ) { stop( "fitness function output must be probabilities (between 0 and 1)" ) }
 
-  # make X, Y
-  X <- data[ , !names( data ) %in% outcome ]
-  Y <- data[ , names( data ) %in% outcome ]
-
-
-  # initialize empty vector for AIC
-  AIC <- rep( 0 , P )
-
-  # loop through each parent and regression with selected variables, and output AIC
-  for ( i in 1:P ){
-  	if ( intercept[ i ] == 1 ){
-      AIC[ i ] <- AIC( lm( Y ~ . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
-  	} else {
-      AIC[ i ] <- AIC( lm( Y ~ 0 + . , data = data.frame( Y , X[ , which( parents[ i , ] == 1 ) ] ) ) )
-  	}
-  }
+  AIC <- calculateAIC(data, outcome, parents, intercept)
 
   # assign fitness probabilities to calculated AICs, and select (stochastically) parents to keep
   select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fitness_prob , replace = TRUE )
   parents_selection <- parents[ select_ind , ]
   intercept_selection <- intercept[ select_ind ]
 
-  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection ) )
+  return( list( parents_selection = parents_selection , intercept_selection = intercept_selection, AIC = AIC ) )
 }
 
 # simulate data
