@@ -21,9 +21,15 @@ Initiation <- function(data, pSize, minC=0.1, maxC=0.9){
     return("minC and maxC should be the value between 0 and 1")
 
   initMatrix<-matrix(data=NA, nrow = pSize, ncol = vars)
-  prob<-runif(pSize,min=minC, max=maxC)
-  for(i in 1:pSize)
-    initMatrix[i,]<-sample(c(0,1), vars, replace = TRUE, c(1-prob[i],prob[i]))
+  
+  prob<-matrix(runif(pSize,min=minC, max=maxC), nrow=1)
+  
+  initMatrix<-apply(prob,2,function(x) {
+                            v<-sample(c(0,1), vars, replace = TRUE, c(1-x,x))
+                            if(sum(v) == 0)
+                              v[floor(runif(1, min=1, max=vars))] = 1
+                            return(v)})
+
   intercept<-sample(c(0,1),pSize,replace = TRUE)
 
   return(list("InitMatrix"<-initMatrix, "Intercept"<-intercept))
