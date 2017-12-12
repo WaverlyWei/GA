@@ -30,7 +30,9 @@ Initiation <- function(data, pSize, minC=0.1, maxC=0.9){
                               v[floor(runif(1, min=1, max=vars))] = 1
                             return(v)})
 
-  intercept<-sample(c(0,1),pSize,replace = TRUE)
+ initMatrix<-t(initMatrix) 
+ 
+ intercept<-sample(c(0,1),pSize,replace = TRUE)
 
   return(list("InitMatrix"<-initMatrix, "Intercept"<-intercept))
 }
