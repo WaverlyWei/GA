@@ -9,8 +9,8 @@
 initData <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
 initOutcome <-1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]+1.2*initData[,7]
 
-Initiation <- function(data, pSize, minC=0.1, maxC=0.9){
-  
+initiation <- function(data, pSize=length(data[1,])*5, minC=0.1, maxC=0.9){
+
   vars<-ncol(data)-1
   numData<-nrow(data)
   if(minC>maxC)

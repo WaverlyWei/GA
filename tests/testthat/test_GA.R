@@ -9,8 +9,8 @@ test_that("Input validation", {
 })
 
 initData <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
-initOutcome<-1+-1*X[,1]+2*X[,3]+ 1.1*X[,5]+1.2*X[,7]
-data <- data.frame( X , Y )
+initOutcome<-1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]+1.2*initData[,7]
+data <- data.frame( initData, initOutcome )
 
 test_that("GA algorithm work correctly", {
   # check if the result from GA is same with the true value? 
@@ -19,12 +19,12 @@ test_that("GA algorithm work correctly", {
 
 #Initiation
 test_that("Input validation for Initiation", {  
-  expect_error(Initiation(data, 10, 0.1, 1.2))  
-  expect_error(Initiation(data, 10, 0.5, 0.4))  
+  expect_error(initiation(data, 10, 0.1, 1.2))  
+  expect_error(initiation(data, 10, 0.5, 0.4))  
 })
 
 test_that("Initation returns correct result", {
-  starting<-Initiation(data, 10,0.01,0.99)
+  starting<-initiation(data, 10,0.01,0.99)
   #Check the size of data is equal to pSize
   expect_equal(nrow(starting[[1]]),10)
   expect_equal(length(starting[[2]]),10)

@@ -60,8 +60,8 @@ pSize<-15
 vars<-dim(initData)[2]
 
 # initiate parents (make sure to define Initiation function previously)
-starting<-Initiation(data, pSize, minC, maxC)
+#starting<-Initiation(data, pSize, minC, maxC)
 
 # run selection function
-selection( data = data , outcome = "initOutcome" , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] , fitness = GHFitness )
+#selection( data = data , outcome = "initOutcome" , parents = starting[[ 1 ]] , intercept = starting[[ 2 ]] , fitness = GHFitness )
 
