@@ -7,6 +7,10 @@
 \title{GA Documentation}
 \author{Mary Combs, Heejung Kim, Mohammad Soheilypour, Linqing(Waverly) Wei}
 \maketitle
+
+\section{Github}
+User Name: WaverlyWei\\
+Link: https://github.com/WaverlyWei/GA
 \section{Contributions}
 Group Memebers: Mary Combs, Heejung Kim, Mohammad Soheilypour, Linqing(Waverly) Wei\\
 
