@@ -13,8 +13,6 @@ Initiation <- function(data, pSize, minC=0.1, maxC=0.9){
   
   vars<-ncol(data)-1
   numData<-nrow(data)
-  if(pSize > numData)
-    return("Population size cannot be greater than number of data")
   if(minC>maxC)
     return("minC cannot be greater than maxC")
   if(minC>=1 || minC<=0 || maxC >=1 || maxC <=0)
@@ -37,10 +35,3 @@ Initiation <- function(data, pSize, minC=0.1, maxC=0.9){
   return(list("InitMatrix"<-initMatrix, "Intercept"<-intercept))
 }
 
-## test result
-minC<-0.1
-maxC<-0.9
-pSize<-15
-vars<-dim(initData)[2]
-
-starting<-Initiation(vars, pSize, minC, maxC)

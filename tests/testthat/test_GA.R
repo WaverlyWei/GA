@@ -18,8 +18,7 @@ test_that("GA algorithm work correctly", {
 })
 
 #Initiation
-test_that("Input validation for Initiation", {
-  expect_equal(Initiation(data, 600), "Population size cannot be greater than number of data")  
+test_that("Input validation for Initiation", {  
   expect_equal(Initiation(data, 10, 0.1, 1.2), "minC and maxC should be the value between 0 and 1")  
   expect_equal(Initiation(data, 10, 0.5, 0.4), "minC cannot be greater than maxC")  
 })
@@ -36,7 +35,7 @@ test_that("Initation returns correct result", {
 #Selection
 
 parents<-matrix(NA, 3,10)
-parents[1,]<-c(1,1,0,0,1,0,1,0,0,0) # best AIC
+parents[1,]<-c(1,0,1,0,1,0,1,0,0,0) # best AIC
 parents[2,]<-c(1,0,0,0,1,0,0,0,0,0)
 parents[3,]<-c(0,0,1,0,0,1,0,0,0,0)
 intercept<-c(1,0,1)
