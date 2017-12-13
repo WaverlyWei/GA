@@ -4,9 +4,8 @@
 # and another investigation suggested that the rate should be nearly proportional
 # to 1/(P√C) [571]. Nevertheless, a fixed rate independent of P and C is
 # a common choice.
-mutation <-function(P){
+mutation <-function(P,mutationProb){
 
-  mutationProb = 0.5 # 1% mutation probability according to Givens and Hoeting
   n = length(P)
 
   # Identifying which sites should be mutated
