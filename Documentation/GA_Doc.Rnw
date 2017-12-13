@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+\usepackage{eulervm}
+\usepackage{upgreek}
+
+\begin{document}
+\title{GA Documentation}
+\author{Mary Combs, Heejung Kim, Mohammad Soheilypour, Linqing(Waverly) Wei}
+\maketitle
+\section{Contributions}
+Group Memebers: Mary Combs, Heejung Kim, Mohammad Soheilypour, Linqing(Waverly) Wei\\
+
+Mary: Implemented Selection function; Implemented Helper functions(GHFitness, calculateAIC); Wrote helper page for selection function\\
+
+Heejung:Implemented initiation function; Wrote test cases\\
+
+Mohammad:Implemented mutation function; Wrote helper information for initiation, crossover and mutation functions; Organized the strucutre of overall Select function\\
+
+Waverly:Implemented crossover function; Wrote pdf documentation; Created Git Repo; Created initial R package
+\section{Approach}
+The solution is composed of three levels: Main function (Select), Modular functions(initiation, selection, crossover, mutation) and Helper functions(calculateAIC, GHFitness). \\
+\section{Main function:Select}
+Input: User defined dataset(matrix), Model(lm/glm), Fitness function\\
+Output: Selected variabels(list)\\
+Stopping Criteria: AIC value converges \(\Delta AIC -> 0\)\\
+
+Select function first calls Initiation function to get starting data. The starting data are separated into two components: parents and interncept. Since converge happens aymptotically in this solution, the limiting steps of converge is preset within Select function. Then it continues to the next step: breeding the next generation. To generate the next generation, according to Genetic Algorithm, four modular functions are involved. Parents are passed into Selection function, ranked based on objective function(fitness) and parent matrix is updtaed for the next steps. Children are then passed into Crossover and Mutation function to be randomized. The outcome is then set to be the next generation of parents and will go into another round.
+\section{Modular Functions}
+\subsection{Initiation}
+Input:vars(number of possible variables), pSize(population size for each generation), minC(min subset size in percent
+), maxC(max subset size in percent)\\
+Output:Initial Matrix with 0s and 1s\\
+
+Initiation function creates a subset of original dataset as the starting generation for Select function. The starting matrix passed onto Select function contains both the initial matrxi and intercepts. \\
+\subsection{Selection}
+Input:dataset, outcome, parents(matrix), intercept, fitness function(Use GHFitness for now, can also be user defined)\\
+Output: paretns selection, intercept selection, AIC ( A list of three components)\\
+
+Selection function assigns initital fitness probablity to each parent and then uses AIC as the objective function to rank parents. After sorting, fitness probablity is updated for each parent. Meanwhile, updated intercept and AIC value is also recorded together with selected parents.\\
+\subsection{Crossover}
+Input:P1, P2(parent strings)\\
+Output:P3,P4(crossover strings, a list of two components)\\
+
+Crossover function takes two parents strings and randomly choose a crossover site. Parents strings are cut at the site and ligated to produce children strings.
+\subsection{Mutation}
+Input:Parent, MutationProb\\
+Output: Mutated Parent \\
+
+Mutation functions takes a parent and choose random site to mutate under the constraint of mutation probability.\\
+\section{Helper Functions}
+\subsection{GHFitness}
+Assign fitness probablity to each parent based on the formula:
+\begin{gather*}
+\phi({v_i}^{(t)}) = \dfrac{2r_i}{P(P+1)}\\
+\end{gather*}
+This assignment gives the best inidvidual a probability of \(2/(P+1)\)
+\subsection{calculateAIC}
+AIC is calculated by applying linear model on response vector Y and covariates X. This function is used both for ranking individuals and for calculating the convergent AIC value (stopping criteria).
+
+\section{Testing}
+Testing is performed on four modular functions in two aspects: (1) Valid input (2)Expected return results
+\subsection{Example of Test cases}
+\end{document}
