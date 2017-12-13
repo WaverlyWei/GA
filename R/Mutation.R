@@ -16,5 +16,5 @@ mutation <-function(P,mutationProb){
 }
 
 # test
-P = sample(c(0,1),10,replace = TRUE)
-result = mutation(P)
+#P = sample(c(0,1),10,replace = TRUE)
+#result = mutation(P)

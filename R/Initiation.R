@@ -14,9 +14,9 @@ Initiation <- function(data, pSize, minC=0.1, maxC=0.9){
   vars<-ncol(data)-1
   numData<-nrow(data)
   if(minC>maxC)
-    return("minC cannot be greater than maxC")
+    stop("minC cannot be greater than maxC")
   if(minC>=1 || minC<=0 || maxC >=1 || maxC <=0)
-    return("minC and maxC should be the value between 0 and 1")
+    stop("minC and maxC should be the value between 0 and 1")
 
   initMatrix<-matrix(data=NA, nrow = pSize, ncol = vars)
   

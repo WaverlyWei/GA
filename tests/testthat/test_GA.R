@@ -8,8 +8,8 @@ test_that("Input validation", {
   #
 })
 
-X <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
-Y<-1+-1*X[,1]+2*X[,3]+ 1.1*X[,5]+1.2*X[,7]
+initData <- matrix(rnorm(5000, sd = 1:5), ncol = 10, byrow = TRUE)
+initOutcome<-1+-1*X[,1]+2*X[,3]+ 1.1*X[,5]+1.2*X[,7]
 data <- data.frame( X , Y )
 
 test_that("GA algorithm work correctly", {
@@ -19,8 +19,8 @@ test_that("GA algorithm work correctly", {
 
 #Initiation
 test_that("Input validation for Initiation", {  
-  expect_equal(Initiation(data, 10, 0.1, 1.2), "minC and maxC should be the value between 0 and 1")  
-  expect_equal(Initiation(data, 10, 0.5, 0.4), "minC cannot be greater than maxC")  
+  expect_error(Initiation(data, 10, 0.1, 1.2))  
+  expect_error(Initiation(data, 10, 0.5, 0.4))  
 })
 
 test_that("Initation returns correct result", {
