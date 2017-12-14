@@ -1,7 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
 
 # GA
 
@@ -11,8 +17,7 @@ GA provides functions to implement the genetic algorithm for variable selection 
 
 You can install GA from github with:
 
-
-```r
+```{r gh-installation, eval = TRUE, results = 'hide', warnings = FALSE, messages = FALSE}
 # install.packages("devtools")
 devtools::install_github("WaverlyWei/GA")
 ```
@@ -21,8 +26,7 @@ devtools::install_github("WaverlyWei/GA")
 
 This is a basic example which shows you how to solve a common problem:
 
-
-```r
+```{r example}
 library(GA)
 
 # simulate data
