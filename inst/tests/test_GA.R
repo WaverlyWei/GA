@@ -16,6 +16,18 @@ test_that("GA algorithm work correctly", {
   expect_equal(variables, c(1,2,4,6))
 })
 
+# real example: white wine quailty data
+whiteWine<-read.csv('data/winequality-white.csv',header=TRUE,sep=';')
+numCol <-dim(whiteWine)[2]
+initOutcome<-whiteWine[,numCol]
+initData<-matrix(unlist(whiteWine[,-numCol]), ncol=numCol-1, byrow=FALSE)
+data <- data.frame( initData, initOutcome )
+model<- log(initOutcome)~ X1+X2+X3+X4+X5+X6+X7+X8+X9+X10+X11
+GAresults = select(data, model, step = 200)
+variables = GAresults[[1]]
+convergence = GAresults[[2]]
+plot(convergence)
+
 context("Auxiliary function for GA Algorithm is tested")
 
 context("Testing Initiation")
