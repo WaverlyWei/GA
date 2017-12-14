@@ -15,8 +15,6 @@ You can install GA from github with:
 ```r
 # install.packages("devtools")
 devtools::install_github("WaverlyWei/GA")
-#> Skipping install of 'GA' from a github remote, the SHA1 (f9cb45cc) has not changed since last install.
-#>   Use `force = TRUE` to force installation
 ```
 
 ## Example
