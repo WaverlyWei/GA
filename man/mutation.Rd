@@ -27,9 +27,6 @@ generation <- initiation( C = C , P = 4 )
 # apply mutation function to each row in generation
 mut_gen <- apply( generation , 1 , mutation , mutationProb = 0.01 , C = C )
 
-Mutation function
-
-Mutate an individual in GA
 }
 \keyword{algorithm,}
 \keyword{genetic}

@@ -18,11 +18,6 @@
 #' mut_gen <- apply( generation , 1 , mutation , mutationProb = 0.01 , C = C )
 #' 
 
-
-#' Mutation function
-#'
-#' Mutate an individual in GA
-
 mutation <-function( P_i , mutationProb , C ){
 
   # Identifying which sites should be mutated

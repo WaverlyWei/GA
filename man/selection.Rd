@@ -20,8 +20,8 @@ Selects independent variables to be bred by genetic algorithm based on AIC fitne
 }
 \examples{
 # simulate data
-initData <- matrix( rnorm( 2500 , sd = 1:5 ) , ncol = 5 , byrow = TRUE )
-initOutcome <- 1 - 1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
+initData <- matrix( rnorm( 2500 , sd = c(1,  5, 7 , 100 , 40 ) ) , ncol = 5 , byrow = TRUE )
+initOutcome <- 10 - 15 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
 data <- data.frame( initData, initOutcome )
 
 # define input parameters

@@ -9,13 +9,13 @@
 #' @export
 #' @examples 
 #' # simulate data
-#' initData <- matrix( rnorm( 2500 , sd = 1:5 ) , ncol = 5 , byrow = TRUE )
-#' initOutcome <- 1 - 1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
+#' initData <- matrix( rnorm( 2500 , sd = c(1,  5, 7 , 100 , 40 ) ) , ncol = 5 , byrow = TRUE )
+#' initOutcome <- 10 - 15 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
 #' 
 #' # define input parameters
 #' data <- data.frame( initData, initOutcome )
 #' model <- data$initOutcome ~ X1 + X2 + X3 + X4 + X5
-#'
+#' 
 #' # call select function
 #' GAresults <- select( data = data , model = model )
 #'
@@ -37,13 +37,17 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
   # Initialize the first generation
   init_parents <- initiation( C = C , P = P )
 
-  # initialize convergence vector
-  convergence <- rep( 0 , steps )
+  # initialize output objects
+  convergence <- NULL
+  child_minAIC <- matrix( 0 , nrow = 1 , ncol = C )
+  regressions <- vector( "list" , 1 ) 
 
   # select fittest parents to breed
   tmp <- selection( mm = mm , model = model , parents = init_parents , P = P )
   parents <- tmp$children
   parent_AIC <- tmp$minAIC
+  child_minAIC[ 1 , ] <- tmp$child_minAIC
+  regressions[[ 1 ]] <- tmp$reg_minAIC
 
   # print update
   cat( "step 0" , colnames( mm )[ which( tmp$child_minAIC == 1 ) ] , "\n" , sep = " ")
@@ -70,12 +74,17 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
     tmp <- selection( mm = mm , model = model , parents = children , P = P )
     children <- tmp$children
     children_AIC <- tmp$minAIC
+    child_minAIC <- rbind( child_minAIC , tmp$child_minAIC )
+    regressions[[ i ]] <- tmp$reg_minAIC
 
     # print update
-    cat( paste0( "step" , i ) , colnames( mm )[ which( tmp$child_minAIC == 1 ) ] , "\n" , sep = " ")
+    cat( paste( "step" , i ) , colnames( mm )[ which( tmp$child_minAIC == 1 ) ] , "\n" , sep = " ")
 
     # calculate convergenc criterion
-    convergence[ i ] <- abs(children_AIC - parent_AIC)
+    convergence <- c( convergence , abs( children_AIC - parent_AIC ) )
+
+    # check convergence criterion
+    if( i > 5 ){ if( convergence[ i ] <= conv_criterion & convergence[ (i - 1 ) ] <= conv_criterion ){ break() } }
 
     # New parents
     parents <- children
@@ -83,7 +92,9 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
 
   }
 
+  solution <- colnames( mm )[ which( tmp$child_minAIC == 1 ) ] 
+
   # Returning the selected variables
-  return( list( colnames( mm )[ which( tmp$child_minAIC == 1 ) ] , convergence ) )
+  return( list( solution = solution, convergence = convergence , children_minAIC = child_minAIC , regressions = regressions ) )
 
 }

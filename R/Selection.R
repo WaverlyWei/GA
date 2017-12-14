@@ -7,10 +7,10 @@
 #' @param P Population size for each generation
 #' @keywords genetic algorithm, model selection, selection
 #' @export
-#' @examples 
+#' @examples
 #' # simulate data
-#' initData <- matrix( rnorm( 2500 , sd = 1:5 ) , ncol = 5 , byrow = TRUE )
-#' initOutcome <- 1 - 1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
+#' initData <- matrix( rnorm( 2500 , sd = c(1,  5, 7 , 100 , 40 ) ) , ncol = 5 , byrow = TRUE )
+#' initOutcome <- 10 - 15 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
 #' data <- data.frame( initData, initOutcome )
 #' 
 #' # define input parameters
@@ -33,11 +33,14 @@ selection <- function( mm , model , parents, P ){
 
   # initialize empty vector for AIC
   AIC <- rep( 0 , P )
+  reg <- vector( "list" , P )
 
   for ( i in 1:P ){
     dat <- data.frame( subset( mm , select = colnames( mm )[ which( parents[ i , ] == 1 ) ] ) )
     mod <- reformulate( colnames( dat ) , model[[ 2 ]] )
-    AIC[ i ] <- AIC( lm( mod , data = dat ) )
+    tmp_reg <- lm( mod , data = dat )
+    reg[[ i ]] <- tmp_reg
+    AIC[ i ] <- AIC( tmp_reg )
   }
 
   fit_prob <- 2 / P / ( P + 1 ) * seq( 1:P ) # givens_hoeting fitness formula
@@ -48,8 +51,10 @@ selection <- function( mm , model , parents, P ){
 
   children <- parents[ select_ind , ]
   child_minAIC <- parents[ tail( n = 1 , AIC_ord ) , ]
+  reg_minAIC <- reg[[ tail( n = 1 , AIC_ord ) ]]
 
-  return( list( children = children , minAIC = min( AIC ) , child_minAIC = child_minAIC ) )
+  return( list( children = children , minAIC = min( AIC ) , child_minAIC = child_minAIC , reg_minAIC = reg_minAIC ) )
+
 }
 
 
