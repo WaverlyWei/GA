@@ -18,11 +18,6 @@ test_that("GA algorithm work correctly", {
 })
 
 #Initiation
-test_that("Input validation for Initiation", {  
-  expect_error(initiation(data, 10, 0.1, 1.2))  
-  expect_error(initiation(data, 10, 0.5, 0.4))  
-})
-
 test_that("Initation returns correct result", {
   starting<-initiation(data, 10,0.01,0.99)
   #Check the size of data is equal to pSize
