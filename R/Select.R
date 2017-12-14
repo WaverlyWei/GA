@@ -84,6 +84,6 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
   }
 
   # Returning the selected variables
-  return( list( which( tmp$child_minAIC == 1 ) , convergence ) )
+  return( list( colnames( mm )[ which( tmp$child_minAIC == 1 ) ] , convergence ) )
 
 }
