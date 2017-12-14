@@ -15,6 +15,15 @@ You can install GA from github with:
 ```r
 # install.packages("devtools")
 devtools::install_github("WaverlyWei/GA")
+#> Downloading GitHub repo WaverlyWei/GA@master
+#> from URL https://api.github.com/repos/WaverlyWei/GA/zipball/master
+#> Installing GA
+#> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+#>   --no-environ --no-save --no-restore --quiet CMD INSTALL  \
+#>   '/private/var/folders/mr/py9lrswd76j8qw29g61v2rn80000gn/T/RtmpPyzoan/devtools9045e5bf4d2/WaverlyWei-GA-908f31b'  \
+#>   --library='/Library/Frameworks/R.framework/Versions/3.4/Resources/library'  \
+#>   --install-tests
+#> 
 ```
 
 ## Example

@@ -17,7 +17,7 @@ GA provides functions to implement the genetic algorithm for variable selection 
 
 You can install GA from github with:
 
-```{r gh-installation, eval = FALSE}
+```{r gh-installation, eval = TRUE}
 # install.packages("devtools")
 devtools::install_github("WaverlyWei/GA")
 ```
