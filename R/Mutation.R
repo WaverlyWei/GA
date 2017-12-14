@@ -4,17 +4,13 @@
 # and another investigation suggested that the rate should be nearly proportional
 # to 1/(P√C) [571]. Nevertheless, a fixed rate independent of P and C is
 # a common choice.
-mutation <-function(P,mutationProb){
-
-  n = length(P)
+mutation <-function( P_i , mutationProb , C ){
 
   # Identifying which sites should be mutated
-  mut <- which(runif(n, 0, 1)<mutationProb)
+  mut <- which( runif( C , 0 , 1 ) < mutationProb )
 
-  P[mut] <- ifelse(P[mut]==1,0,1)
-  return(P)
+  P_i[ mut ] <- ifelse( P_i[ mut ] == 1 , 0 , 1 )
+
+  return( P_i )
+
 }
-
-# test
-#P = sample(c(0,1),10,replace = TRUE)
-#result = mutation(P)

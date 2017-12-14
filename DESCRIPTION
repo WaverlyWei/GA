@@ -1,10 +1,10 @@
 Package: GA
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Genetic Algorithm for model selection developed as a Final Project for Stat 243
 Version: 0.1.0
 Author: Mary Heejung Waverly Mohammad
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Maintainer: maryac330@berkeley.edu
+Description: This package provides a function, select(), which allows the user to input their dataset, specify a linear model, and then uses the genetic algorithm to optimize the model selection process. The select() function depends on four auxiliary functions: initialize(), selection(), crossover(), and mutation().
+License: Not licensed
 LazyData: TRUE
 RoxygenNote: 6.0.1

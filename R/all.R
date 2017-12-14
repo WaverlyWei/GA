@@ -2,10 +2,6 @@ initData <- matrix( rnorm( 5000 , sd = 1:5 ) , ncol = 10 , byrow = TRUE )
 initOutcome <-1 + -1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ] + 1.2 * initData[ , 7 ]
 dataSet <- data.frame( initData , initOutcome )
 
-
-# fitness function option as defnied in givens_hoeting
-GHFitness <- function( P ){ 2 / P / ( P + 1 ) * seq( 1:P ) }
-
 initiation <- function( C , P ){
 
   init_parents <- matrix( NA , nrow = P , ncol = C )
@@ -17,7 +13,7 @@ initiation <- function( C , P ){
   return( init_parents )
 }
 
-selection <- function( mm , model , parents, P , fitness = GHFitness ){
+selection <- function( mm , model , parents, P ){
 
   parents <- subset( parents , rowSums( parents ) > 0 )
   if ( dim( parents )[ 1 ] < P ){
@@ -35,8 +31,10 @@ selection <- function( mm , model , parents, P , fitness = GHFitness ){
     AIC[ i ] <- AIC( lm( mod , data = dat ) )
   }
 
+  fit_prob <- 2 / P / ( P + 1 ) * seq( 1:P ) # givens_hoeting fitness formula
+
   # assign fitness probabilities to calculated AICs, and select (stochastically) parents to keep
-  select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fitness( P ) , replace = TRUE )
+  select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fit_prob , replace = TRUE )
   children <- parents[ select_ind , ]
 
   return( list( children = children , minAIC = min( AIC ) ) )
@@ -67,8 +65,6 @@ mutation <-function( P_i , mutationProb , C ){
 }
 
 select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
-
-  # data <- data.frame( data )
 
   mm <- model.matrix( model , data = data )
 
