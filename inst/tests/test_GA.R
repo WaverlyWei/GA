@@ -1,29 +1,33 @@
 library(testthat)
 
 context("GA Algorithm work correctly for simulated data")
-#Select
-initData <- matrix( rnorm( 2500 , sd = 1:5 ) , ncol = 5 , byrow = TRUE )
-initOutcome <- 1 - 1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
-data <- data.frame( initData, initOutcome )
-model <- data$initOutcome ~ X1 + X2 + X3 + X4 + X5
-GAresults = select( data , model , step = 300 )
-variables = GAresults[[ 1 ]]
-convergence = GAresults[[ 2 ]]
-plot( GAresults[[ 2 ]] , pch = 16 , cex = 0.75 , xlab = "Step" , ylab = "Convergene Criterion")
+#simulated data:
+##initData = matrix(rnorm(2500, sd = 1:5), ncol = 5, byrow = TRUE)
+##initOutcome = 1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]
+##data <- data.frame( initData, initOutcome )
 
+model<- simulatedData$initOutcome~ X1+X2+X3+X4+X5
+GAresults = select(simulatedData, model, step = 300)
+variables = GAresults[[1]]
+convergence = GAresults[[2]]
+plot(convergence)
+
+#Select
 test_that("GA algorithm work correctly", {
   # check if the result from GA is same with the true value? 
   expect_equal(variables, c(1,2,4,6))
 })
 
+context("GA Algorithm work correctly for real data (white wine quality data)")
 # real example: white wine quailty data
-whiteWine<-read.csv('data/winequality-white.csv',header=TRUE,sep=';')
-numCol <-dim(whiteWine)[2]
-initOutcome<-whiteWine[,numCol]
-initData<-matrix(unlist(whiteWine[,-numCol]), ncol=numCol-1, byrow=FALSE)
-data <- data.frame( initData, initOutcome )
-model<- data$log(initOutcome)~ X1+X2+X3+X4+X5+X6+X7+X8+X9+X10+X11
-GAresults = select(data, model, step = 200)
+##whiteWine<-read.csv('data/winequality-white.csv',header=TRUE,sep=';')
+##numCol <-dim(whiteWine)[2]
+##quality <- whiteWine[,numCol]
+##attrs <- matrix(unlist(whiteWine[,-numCol]), ncol=numCol-1, byrow=FALSE)
+##wineData <- data.frame( attrs, quality )
+
+wineModel<- log(whiteWineData$quality)~ X1+X2+X3+X4+X5+X6+X7+X8+X9+X10+X11
+GAresults = select(whiteWineData, wineModel, step = 200)
 variables = GAresults[[1]]
 convergence = GAresults[[2]]
 plot(convergence)
@@ -47,7 +51,7 @@ parents[1,]<-c(1, 1,0,1,0,1) # best AIC
 parents[2,]<-c(1, 1,0,0,0,1)
 parents[3,]<-c(1, 0,0,1,0,0)
 
-mm <- model.matrix( model , data = data )
+mm <- model.matrix( model , data = simulatedData )
 
 test_that("Selection returns correct result", {
   result<-selection( mm , model , parents, 3 )
