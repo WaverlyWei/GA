@@ -113,5 +113,42 @@ AIC is calculated by applying linear model on response vector Y and covariates X
 
 \section{Testing}
 Testing is performed on four modular functions in two aspects: (1) Valid input (2)Expected return results
-\subsection{Example of Test cases}
+\subsection{Example 1: Simulated Data}
+initData \(<-\) matrix(rnorm(2500, sd = 1:5), ncol = 5, byrow = TRUE)\\
+initOutcome \(<-\) 1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]\\
+expected output: c(1,2,4,6) \\
+actual output: c(1,6)\\
+(1: intercept, 2: X1, 3:X2, etc.)\\
+\subsection{Example 2: Whitewine Quality Data}
+Input: White Wine Quality Dataset\\
+Output: c(1,2,3,4,5,7,8,9,11,12)\\
+(Selected variables indexed by column number)\\
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##   fixed.acidity volatile.acidity citric.acid residual.sugar chlorides
+## 1           7.0             0.27        0.36           20.7     0.045
+## 2           6.3             0.30        0.34            1.6     0.049
+## 3           8.1             0.28        0.40            6.9     0.050
+## 4           7.2             0.23        0.32            8.5     0.058
+## 5           7.2             0.23        0.32            8.5     0.058
+## 6           8.1             0.28        0.40            6.9     0.050
+##   free.sulfur.dioxide total.sulfur.dioxide density   pH sulphates alcohol
+## 1                  45                  170  1.0010 3.00      0.45     8.8
+## 2                  14                  132  0.9940 3.30      0.49     9.5
+## 3                  30                   97  0.9951 3.26      0.44    10.1
+## 4                  47                  186  0.9956 3.19      0.40     9.9
+## 5                  47                  186  0.9956 3.19      0.40     9.9
+## 6                  30                   97  0.9951 3.26      0.44    10.1
+##   quality
+## 1       6
+## 2       6
+## 3       6
+## 4       6
+## 5       6
+## 6       6
+## [1] 4898   12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{document}
