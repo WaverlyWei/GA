@@ -1,5 +1,22 @@
+#' Genetic Algorithm for Variable Selection
+#'
+#' A genetic algorithm for variable selection in regression problems
+#' @param data The input data in the form of a dataframe. Each row is one entry with columns as different variables and the last column as the outcome.
+#' @param model A formula object (ex. y ~ x1 + x2^2 + x2:x3 )
+#' @param conv_criterion Convergence criterion (not currently used)
+#' @param steps Maximum number of steps to run GA
+#' @keywords genetic algorithm, model selection
+#' @export
+#' @examples 
+#' initData <- matrix( rnorm( 5000 , sd = 1:5 ) , ncol = 10 , byrow = TRUE )
+#' initOutcome <-1 + -1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ] + 2.7 * initData[ , 3] * initData[ , 5 ]
+#' dataSet <- data.frame( initData , initOutcome )
+#' GAresults <- select( data = dataSet , model = dataSet$initOutcome ~ X1 + X3 + X5 + X3:X5 + X7 + X9 
+#' plot( GAresults[[ 2 ]] , pch = 16 , cex = 0.75 , xlab = "Step" , ylab = "Convergene Criterion")
+
 select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
 
+  # model <- as.formula( model )
   mm <- model.matrix( model , data = data )
 
   # set C the length of each individual chromosome ,ie the number of vars
