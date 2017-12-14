@@ -22,7 +22,7 @@ Implements genetic algorithm mutation by randomly selection, with low probabilit
 C <- 5
 
 # initiate a generation
-generation <- initiation( C = C , P = 30 )
+generation <- initiation( C = C , P = 4 )
 
 # apply mutation function to each row in generation
 mut_gen <- apply( generation , 1 , mutation , mutationProb = 0.01 , C = C )

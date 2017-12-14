@@ -36,15 +36,21 @@ selection <- function( mm , model , parents, P ){
 
   for ( i in 1:P ){
     dat <- data.frame( subset( mm , select = colnames( mm )[ which( parents[ i , ] == 1 ) ] ) )
-    mod <- reformulate( colnames( dat ) , model[[2]] )
+    mod <- reformulate( colnames( dat ) , model[[ 2 ]] )
     AIC[ i ] <- AIC( lm( mod , data = dat ) )
   }
 
   fit_prob <- 2 / P / ( P + 1 ) * seq( 1:P ) # givens_hoeting fitness formula
 
   # assign fitness probabilities to calculated AICs, and select (stochastically) parents to keep
-  select_ind <- sample( order( AIC , decreasing = TRUE ) , P , prob = fit_prob , replace = TRUE )
-  children <- parents[ select_ind , ]
+  AIC_ord <- order( AIC , decreasing = TRUE )
+  select_ind <- sample( AIC_ord , P , prob = fit_prob , replace = TRUE )
 
-  return( list( children = children , minAIC = min( AIC ) ) )
+  children <- parents[ select_ind , ]
+  child_minAIC <- parents[ tail( n = 1 , AIC_ord ) , ]
+
+  return( list( children = children , minAIC = min( AIC ) , child_minAIC = child_minAIC ) )
 }
+
+
+
