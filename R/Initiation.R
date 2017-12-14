@@ -1,8 +1,9 @@
-#Create a set of individuals, where each individual is a string of 0s and 1s with 1s
-#input
-##C: number of possible variables
-##P: population size for each generation
-##output: Initial Matrix with 0s and 1s
+#' Initiation function
+#'
+#' Create a set of individuals, where each individual is a string of 0s and 1s with 1s being the variables being used
+#' @param P Population size for each generation
+#' @param C number of variables
+#'
 
 initiation <- function( C , P ){
 
