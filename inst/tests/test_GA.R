@@ -35,6 +35,8 @@ parents[1,]<-c(1, 1,0,1,0,1) # best AIC
 parents[2,]<-c(1, 1,0,0,0,1)
 parents[3,]<-c(1, 0,0,1,0,0)
 
+mm <- model.matrix( model , data = data )
+
 test_that("Selection returns correct result", {
   result<-selection( mm , model , parents, 3 )
   #Check the size of result data is equal to pSize
