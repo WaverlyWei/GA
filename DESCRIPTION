@@ -7,4 +7,4 @@ Maintainer: Mary <maryac330@berkeley.edu>
 Description: This package provides a function, select(), which allows the user to input their dataset, specify a linear model, and then uses the genetic algorithm to optimize the model selection process. The select() function depends on four auxiliary functions: initialize(), selection(), crossover(), and mutation().
 License: Not licensed
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
