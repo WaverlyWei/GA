@@ -3,7 +3,7 @@
 #' A genetic algorithm for variable selection in regression problems
 #' @param data The input data in the form of a dataframe. Each row is one entry with columns as different variables and the last column as the outcome.
 #' @param model A formula object ( eg. data$y ~ x1 + x2^2 + x2:x3 ). Note: must specify data source for dependent variable
-#' @param conv_criterion Convergence criterion (not currently used)
+#' @param conv_criterion Convergence criterion
 #' @param steps Maximum number of steps to run GA
 #' @keywords genetic algorithm, model selection
 #' @export

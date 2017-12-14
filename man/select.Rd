@@ -11,7 +11,7 @@ select(data, model, conv_criterion = 1e-07, steps = 50)
 
 \item{model}{A formula object ( eg. data$y ~ x1 + x2^2 + x2:x3 ). Note: must specify data source for dependent variable}
 
-\item{conv_criterion}{Convergence criterion (not currently used)}
+\item{conv_criterion}{Convergence criterion}
 
 \item{steps}{Maximum number of steps to run GA}
 }
