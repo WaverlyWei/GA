@@ -1,7 +1,9 @@
-##Not sure what form of datastrucutre would be passed from selection
-##Add intermediate helper function later
-##Input: Two parent strings, in the form of binary vector
-##Ouput: Crossovered strings P3, P4
+#' Crossoveer function
+#'
+#' Crossover of two individuals in GA
+#' @param P1 First individual
+#' @param P2 Second individual
+#' @param C number of variables
 
 crossover <- function( P1 , P2 , C ){
 
