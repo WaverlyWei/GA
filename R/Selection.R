@@ -1,3 +1,27 @@
+#' Selection Function for Genetic Algorithm for Variable Selection
+#'
+#' Selects independent variables to be bred by genetic algorithm based on AIC fitness function
+#' @param mm Model matrix object with intercept and column for each independent variable specified in model
+#' @param model A formula object ( eg. data$y ~ x1 + x2^2 + x2:x3 ). Note: must specify data source for dependent variable
+#' @param parents Parents matrix of P rows indicating with 0 or 1 which  variable selection
+#' @param P Population size for each generation
+#' @keywords genetic algorithm, model selection, selection
+#' @export
+#' @examples 
+#' # simulate data
+#' initData <- matrix( rnorm( 2500 , sd = 1:5 ) , ncol = 5 , byrow = TRUE )
+#' initOutcome <- 1 - 1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
+#' data <- data.frame( initData, initOutcome )
+#' 
+#' # define input parameters
+#' P <- 30
+#' parents <- initiation( C = 5 , P = P )
+#' model <- data$initOutcome ~ X1 + X2 + X3 + X4 + X5
+#' mm <- model.matrix( model , data = data )
+#'
+#' # call selection function
+#' selection( mm = mm , model = model , parents = parents , P = P )
+
 selection <- function( mm , model , parents, P ){
 
   parents <- subset( parents , rowSums( parents ) > 0 )

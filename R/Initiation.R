@@ -1,8 +1,13 @@
-#Create a set of individuals, where each individual is a string of 0s and 1s with 1s
-#input
-##C: number of possible variables
-##P: population size for each generation
-##output: Initial Matrix with 0s and 1s
+#' Initiation Function for Genetic Algorithm for Variable Selection
+#'
+#' Generates initial parent generation to be used by select()
+#' @param C The number of independent variables to be selected from
+#' @param P Population size for each generation
+#' @keywords genetic algorithm, model selection, initiation
+#' @export
+#' @examples 
+#' # call initiation function
+#' init_parents <- initiation( C = 5 , P = 30 )
 
 initiation <- function( C , P ){
 

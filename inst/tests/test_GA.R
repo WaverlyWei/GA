@@ -2,14 +2,14 @@ library(testthat)
 
 context("GA Algorithm work correctly for simulated data")
 #Select
-initData <- matrix(rnorm(2500, sd = 1:5), ncol = 5, byrow = TRUE)
-initOutcome<-1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]
+initData <- matrix( rnorm( 2500 , sd = 1:5 ) , ncol = 5 , byrow = TRUE )
+initOutcome <- 1 - 1 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
 data <- data.frame( initData, initOutcome )
-model<-initOutcome ~ X1+X2 +X3 + X4 + X5
-GAresults = select(data, model, step = 300)
-variables = GAresults[[1]]
-convergence = GAresults[[2]]
-plot(convergence)
+model <- data$initOutcome ~ X1 + X2 + X3 + X4 + X5
+GAresults = select( data , model , step = 300 )
+variables = GAresults[[ 1 ]]
+convergence = GAresults[[ 2 ]]
+plot( GAresults[[ 2 ]] , pch = 16 , cex = 0.75 , xlab = "Step" , ylab = "Convergene Criterion")
 
 test_that("GA algorithm work correctly", {
   # check if the result from GA is same with the true value? 
@@ -22,7 +22,7 @@ numCol <-dim(whiteWine)[2]
 initOutcome<-whiteWine[,numCol]
 initData<-matrix(unlist(whiteWine[,-numCol]), ncol=numCol-1, byrow=FALSE)
 data <- data.frame( initData, initOutcome )
-model<- log(initOutcome)~ X1+X2+X3+X4+X5+X6+X7+X8+X9+X10+X11
+model<- data$log(initOutcome)~ X1+X2+X3+X4+X5+X6+X7+X8+X9+X10+X11
 GAresults = select(data, model, step = 200)
 variables = GAresults[[1]]
 convergence = GAresults[[2]]

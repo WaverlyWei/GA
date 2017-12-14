@@ -2,7 +2,7 @@
 #'
 #' A genetic algorithm for variable selection in regression problems
 #' @param data The input data in the form of a dataframe. Each row is one entry with columns as different variables and the last column as the outcome.
-#' @param model A formula object (ex. y ~ x1 + x2^2 + x2:x3 )
+#' @param model A formula object ( eg. data$y ~ x1 + x2^2 + x2:x3 ). Note: must specify data source for dependent variable
 #' @param conv_criterion Convergence criterion (not currently used)
 #' @param steps Maximum number of steps to run GA
 #' @keywords genetic algorithm, model selection
@@ -14,7 +14,7 @@
 #' dataSet <- data.frame( initData , initOutcome )
 #' 
 #' # call select function
-#' GAresults <- select( data = dataSet , model = dataSet$initOutcome ~ X1 + X3 + X5 + X3:X5 + X7 + X9)
+#' GAresults <- select( data = dataSet , model = dataSet$initOutcome ~ X1 + X3 + X5 + X3:X5 + X7 + X9 )
 #'
 #' # plot convergence results
 #' plot( GAresults[[ 2 ]] , pch = 16 , cex = 0.75 , xlab = "Step" , ylab = "Convergene Criterion")
@@ -62,7 +62,7 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
     }
 
     # mutation
-    children <- apply( children , 2 , mutation , mutationProb = 0.01 , C = C )
+    children <- apply( children , 1 , mutation , mutationProb = 0.01 , C = C )
 
     # run regression with next generation
     tmp <- selection( mm = mm , model = model , parents = children , P = P )

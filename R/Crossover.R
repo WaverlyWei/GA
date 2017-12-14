@@ -1,9 +1,20 @@
-#' Crossoveer function
+#' Crossover Function for Genetic Algorithm for Variable Selection
 #'
-#' Crossover of two individuals in GA
+#' Implements genetic algorithm crossover at randomly selected locus for two individuals in a generation
 #' @param P1 First individual
 #' @param P2 Second individual
-#' @param C number of variables
+#' @param C The number of independent variables to be selected from
+#' @keywords genetic algorithm, model selection, crossover
+#' @export
+#' @examples
+#' # define initial parameters
+#' C <- 5
+#'
+#' # initiate parent generation
+#' parents <- initiation( C = C , P = 30 )
+#' 
+#' # call crossover function
+#' crossover( P1 = parents[ 1 , ] , P2 = parents[ 2 , ] , C = C )
 
 crossover <- function( P1 , P2 , C ){
 
@@ -16,6 +27,7 @@ crossover <- function( P1 , P2 , C ){
 
   ##Perhaps return all four strings??
   return( list( P3 = P3 , P4 = P4 ) )
+
 }
 
 
