@@ -63,5 +63,20 @@ AIC is calculated by applying linear model on response vector Y and covariates X
 
 \section{Testing}
 Testing is performed on four modular functions in two aspects: (1) Valid input (2)Expected return results
-\subsection{Example of Test cases}
+\subsection{Example 1: Simulated Data}
+initData \(<-\) matrix(rnorm(2500, sd = 1:5), ncol = 5, byrow = TRUE)\\
+initOutcome \(<-\) 1+-1*initData[,1]+2*initData[,3]+ 1.1*initData[,5]\\
+expected output: c(1,2,4,6) \\
+actual output: c(1,6)\\
+(1: intercept, 2: X1, 3:X2, etc.)\\
+\subsection{Example 2: Whitewine Quality Data}
+Input: White Wine Quality Dataset\\
+Output: c(1,2,3,4,5,7,8,9,11,12)\\
+(Selected variables indexed by column number)\\
+<<echo=FALSE,fig=TRUE>>=
+dat = read.csv('winequality-white.csv',sep = ";")
+head(dat)
+##Dimension 
+dim(dat)
+@
 \end{document}
