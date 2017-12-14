@@ -2,7 +2,6 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
-
 # GA
 
 The goal of GA is to ...
