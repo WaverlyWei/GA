@@ -1,9 +1,10 @@
-# From the Givens and Hoeting book:
-#Mutation rates are typically very low, in the neighborhood of 1%. Theoretical
-#work and empirical studies have supported a rate of 1/C [464],
-# and another investigation suggested that the rate should be nearly proportional
-# to 1/(P√C) [571]. Nevertheless, a fixed rate independent of P and C is
-# a common choice.
+#' Mutation function
+#'
+#' Mutate an individual in GA
+#' @param P_i The individual to be mutated
+#' @param mutationProb Probability of mutation
+#' @param C number of variables
+
 mutation <-function( P_i , mutationProb , C ){
 
   # Identifying which sites should be mutated
