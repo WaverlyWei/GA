@@ -7,15 +7,15 @@
 #' @param steps Maximum number of steps to run GA
 #' @keywords genetic algorithm, model selection
 #' @export
-#' @examples 
+#' @examples
 #' # simulate data
 #' initData <- matrix( rnorm( 2500 , sd = c(1,  5, 7 , 100 , 40 ) ) , ncol = 5 , byrow = TRUE )
 #' initOutcome <- 10 - 15 * initData[ , 1 ] + 2 * initData[ , 3 ] + 1.1 * initData[ , 5 ]
-#' 
+#'
 #' # define input parameters
 #' data <- data.frame( initData, initOutcome )
 #' model <- data$initOutcome ~ X1 + X2 + X3 + X4 + X5
-#' 
+#'
 #' # call select function
 #' GAresults <- select( data = data , model = model )
 #'
@@ -40,7 +40,7 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
   # initialize output objects
   convergence <- NULL
   child_minAIC <- matrix( 0 , nrow = 1 , ncol = C )
-  regressions <- vector( "list" , 1 ) 
+  regressions <- vector( "list" , 1 )
 
   # select fittest parents to breed
   tmp <- selection( mm = mm , model = model , parents = init_parents , P = P )
@@ -68,7 +68,7 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
     }
 
     # mutation
-    children <- apply( children , 2 , mutation , mutationProb = 0.01 , C = C )
+    children <- apply( children , 2 , mutation , mutationProb = 1/C , C = C )
 
     # run regression with next generation
     tmp <- selection( mm = mm , model = model , parents = children , P = P )
@@ -92,7 +92,7 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
 
   }
 
-  solution <- colnames( mm )[ which( tmp$child_minAIC == 1 ) ] 
+  solution <- colnames( mm )[ which( tmp$child_minAIC == 1 ) ]
 
   # Returning the selected variables
   return( list( solution = solution, convergence = convergence , children_minAIC = child_minAIC , regressions = regressions ) )
