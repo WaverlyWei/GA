@@ -7,7 +7,7 @@ context("GA Algorithm work correctly for simulated data")
 ##data <- data.frame( initData, initOutcome )
 
 model<- simulatedData$initOutcome~ X1+X2+X3+X4+X5
-GAresults = select(simulatedData, model, step = 50)
+GAresults = select(simulatedData, model, step = 100)
 variables = GAresults[[1]]
 convergence = GAresults[[2]]
 plot(convergence)
@@ -15,7 +15,7 @@ plot(convergence)
 #Select
 test_that("GA algorithm work correctly", {
   # check if the result from GA is same with the true value? 
-  expect_equal(variables, c("(Intercept)","X1","X2","X3","X4","X5"))
+  expect_equal(variables, c("(Intercept)","X1","X3","X5"))
 })
 
 context("GA Algorithm work correctly for real data (white wine quality data)")
@@ -32,7 +32,7 @@ variables = GAresults[[1]]
 convergence = GAresults[[2]]
 plot(convergence)
 
-context("Auxiliary function for GA Algorithm is tested")
+context("Auxiliary function for GA Algorithm:")
 
 context("Testing Initiation")
 #Initiation
