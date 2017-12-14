@@ -68,7 +68,8 @@ select <- function( data , model , conv_criterion = 10e-8 , steps = 50 ){
     }
 
     # mutation
-    children <- apply( children , 2 , mutation , mutationProb = 1/C , C = C )
+    children <- apply( children , 1 , mutation , mutationProb = 1/C , C = C )
+    children <- t(children)
 
     # run regression with next generation
     tmp <- selection( mm = mm , model = model , parents = children , P = P )
